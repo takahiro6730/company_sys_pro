@@ -1,0 +1,108 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+}
+
+body {
+    margin: 0;
+    font-family: yumin;
+}
+
+img {
+    width: 100%;
+    height: auto;
+}
+
+p {
+    font-size: 12px;
+}
+
+.top-title p {
+    text-align: center;
+    font-size: 26px;
+    margin-top: 50px;
+}
+
+.no {
+    position: absolute;
+    margin-top: 30px;
+    padding-left: 40px;
+}
+
+.top-title span {
+    font-size: 12px;
+}
+
+.created-date p {
+    font-size: 12px;
+    position: absolute;
+    right: 40px;
+    top: 65px;
+}
+
+.main {
+    padding-left: 40px;
+    padding-right: 40px;
+    width: 100%;
+}
+
+.main .left {
+    width: 63%;
+    float: left;
+    margin-right: 30px;
+}
+
+.main .left .desc {
+    margin-top: 30px;
+}
+
+.table {
+    border: 1px solid black;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+td {
+    border: 1px solid #222;
+    text-align: center;
+    padding-bottom: 5px;
+    font-size: 11px;
+}
+
+#table1 {
+    margin-top: 10px;
+}
+
+#table2 {
+    margin-top: 40px;
+}
+
+.main .right {
+    margin-top: 40px;
+}
+
+.company-title {
+    font-size: 20px;
+}
+
+.sign {
+    position: absolute;
+    top: 250px;
+    right: 40px;
+    width: 80px;
+    height: 80px;
+}
+
+#table3 {
+    position: absolute;
+    right: 40px;
+    top: 363px;
+    width: 305px;
+}
+
+#table4 {
+    position: absolute;
+    top: 605px;
+    right: 40px;
+    width: 305px;
+}

@@ -1,0 +1,10 @@
+.language-selector {
+    position: absolute;
+    right: 10vw;
+    top: 50px;
+    margin: 10px;
+  }
+  
+  #language-dropdown {
+    border-radius: 5px;
+  }
