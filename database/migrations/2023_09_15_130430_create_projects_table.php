@@ -13,17 +13,20 @@ return new class extends Migration
     {
         Schema::create('projects', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger("user_id");
             $table->unsignedBigInteger("project_manager")->nullable();
             $table->foreign('project_manager')->references('id')->on('users')->onDelete('set null')->onUpdate('cascade');
             $table->string("project_worker");
             $table->string("title");
-            $table->string("platform");
-            $table->integer("amount");
-            $table->unsignedBigInteger("unit_id")->nullable();
-            $table->foreign('unit_id')->references('id')->on('units')->onDelete('set null')->onUpdate('cascade');
-            $table->string("deadline");
-            $table->string("progress");
-            $table->string("other")->nullable();
+            $table->integer("amount")->nullable();
+            $table->integer("type_id")->nullable();
+            $table->integer("progress_state");
+            $table->integer("compleate_state");
+            $table->date("deadline")->nullable();
+            $table->date("deposit")->nullable();
+            $table->integer("invoice_id")->nullable();
+            $table->string("remittance_address")->nullable();
+            $table->string("project_comment")->nullable();
             $table->timestamps();
         });
     }

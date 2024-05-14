@@ -26,7 +26,7 @@
                             <li class="inline-flex items-center">
                                 <a href="javascript:;"
                                     class="inline-flex items-center text-sm font-medium text-gray-800 hover:text-gray-900 dark:text-zinc-100 dark:hover:text-white">
-                                    プロジェクト管理
+                                    案件管理
                                 </a>
                             </li>
                             <li>
@@ -39,7 +39,7 @@
                                     </svg>
                                     <a href="{{ route('projectMana.index') }}"
                                         class="ltr:ml-1 rtl:mr-1 text-sm font-medium text-gray-500 hover:text-gray-900 ltr:md:ml-2 rtl:md:mr-2 dark:text-gray-100 dark:hover:text-white">
-                                        プロジェクト一覧</a>
+                                        案件一覧</a>
                                 </div>
                             </li>
                         </ol>
@@ -68,22 +68,19 @@
                                             案件名</th>
                                         <th
                                             class="p-4 pr-8 border border-y-2 border-gray-50 dark:border-zinc-600 border-l-0">
-                                            プラットフォーム</th>
+                                            進行状況</th>
                                         <th
                                             class="p-4 pr-8 border border-y-2 border-gray-50 dark:border-zinc-600 border-l-0">
                                             予算額</th>
                                         <th
                                             class="p-4 pr-8 border rtl:border-l border-y-2 border-gray-50 dark:border-zinc-600 border-l-0">
-                                            通貨単位</th>
+                                            業務形式番号</th>
                                         <th
                                             class="p-4 pr-8 border rtl:border-l border-y-2 border-gray-50 dark:border-zinc-600 border-l-0">
-                                            納期日</th>
+                                            支払予定日</th>
                                         <th
                                             class="p-4 pr-8 border rtl:border-l border-y-2 border-gray-50 dark:border-zinc-600 border-l-0">
-                                            進行状況</th>
-                                        <th
-                                            class="p-4 pr-8 border rtl:border-l border-y-2 border-gray-50 dark:border-zinc-600 border-l-0">
-                                            その他</th>
+                                            希望出金日</th>
                                             <th
                                             class="p-4 pr-8 border rtl:border-l border-y-2 border-gray-50 dark:border-zinc-600 border-l-0">
                                             作成日</th>
@@ -93,9 +90,6 @@
                                         <th
                                             class="p-4 pr-8 border rtl:border-l border-y-2 border-gray-50 dark:border-zinc-600 border-l-0">
                                             編集</th>
-                                        <th
-                                            class="p-4 pr-8 border rtl:border-l border-y-2 border-gray-50 dark:border-zinc-600 border-l-0">
-                                            削除</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -109,7 +103,7 @@
                                             {{ $i ++ }}</td>
                                         <td
                                             class="p-4 pr-8 border border-t-0 border-l-0 border-gray-50 dark:border-zinc-600">
-                                            {{ $project->user->nickname }}</td>
+                                            {{ isset($project->project_manager)? $project->project_manager : "未設定" }}</td>
                                         <td
                                             class="p-4 pr-8 border border-t-0 border-l-0 border-gray-50 dark:border-zinc-600">
                                             {{ $project->project_worker }}
@@ -119,24 +113,20 @@
                                             {{ $project->title }}</td>
                                         <td class="p-4 pr-8 border border-t-0 border-l-0 border-gray-50 dark:border-zinc-600"
                                             style="text-align: center;">
-                                            {{ $project->platform }}
+                                            {{ $progress_state_types[$project->progress_state]."-".$compleate_state_types[$project->compleate_state] }}
                                         </td>
                                         <td
                                             class="p-4 pr-8 border border-t-0 border-l-0 border-gray-50 dark:border-zinc-600">
                                             {{ $project->amount }}</td>
                                         <td
                                             class="p-4 pr-8 border border-t-0 border-l-0 border-gray-50 dark:border-zinc-600">
-                                            {{ $project->unit->title }}
-                                        </td>
+                                            {{ $project->type_id }}</td>
+                                        <td
+                                            class="p-4 pr-8 border border-t-0 border-l-0 border-gray-50 dark:border-zinc-600">
+                                            {{ $project->deposit }}</td>
                                         <td
                                             class="p-4 pr-8 border border-t-0 border-l-0 border-gray-50 dark:border-zinc-600">
                                             {{ $project->deadline }}</td>
-                                        <td
-                                            class="p-4 pr-8 border border-t-0 border-l-0 border-gray-50 dark:border-zinc-600">
-                                            {{ $project->progress }} % 
-                                        <td
-                                            class="p-4 pr-8 border border-t-0 border-l-0 border-gray-50 dark:border-zinc-600">
-                                            {{ $project->other }}</td>
                                         <td
                                             class="p-4 pr-8 border rtl:border-l border-t-0 border-l-0 border-gray-50 dark:border-zinc-600">
                                             {{ $project->created_at->format('Y-m-d') }}</td>
@@ -145,18 +135,18 @@
                                             {{ $project->updated_at->format('Y-m-d') }}</td>
                                         <td
                                             class="p-4 pr-8 border rtl:border-l border-t-0 border-l-0 border-gray-50 dark:border-zinc-600">
-                                            <button onclick="showEditModal({{ $project->id }}, '{{ $project->project_worker }}', '{{ $project->deadline }}', '{{ $project->progress }}', '{{ $project->other }}')"
+                                            <a href="{{ route('projectMana.edit', ['id'=>$project->id]) }}"
                                                 class="btn text-white bg-green-500 border-green-500 hover:bg-green-600 hover:border-green-600 focus:bg-green-600 focus:border-green-600 focus:ring focus:ring-green-500/30 active:bg-green-600 active:border-green-600">
                                                 <i class="bx bx-pencil text-16 align-middle"></i>
-                                            </button>
+                                            </a>
                                         </td>
-                                        <td
+                                        <!-- <td
                                             class="p-4 pr-8 border rtl:border-l border-t-0 border-l-0 border-gray-50 dark:border-zinc-600">
                                             <button onclick="showDeleteConfirmModal({{ $project->id }})"
                                                 class="btn text-white bg-red-500 border-red-500 hover:bg-red-600 hover:border-red-600 focus:bg-red-600 focus:border-red-600 focus:ring focus:ring-red-500/30 active:bg-red-600 active:border-red-600">
                                                 <i class="bx bx-trash text-16 align-middle"></i>
                                             </button>
-                                        </td>
+                                        </td> -->
                                     </tr>
                                     @endforeach
                                 </tbody>
