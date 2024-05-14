@@ -145,25 +145,23 @@
                             </li>
                         </ul>
                     </li>
-                    @if (Auth::user()->role_id < 3)
-                        <li>
-                            <a href="javascript: void(0);" aria-expanded="false"
-                                class="nav-menu pl-6 pr-4 py-3 block text-sm font-medium text-gray-700 transition-all duration-150 ease-linear hover:text-violet-500 dark:text-gray-300 dark:active:text-white dark:hover:text-white">
-                                <i data-feather="folder"></i>
-                                <span data-key="t-auth"> プロジェクト管理</span>
-                            </a>
-                            <ul>
-                                <li>
-                                    <a href="{{ route('projectMana.create') }}"
-                                        class="pl-14 pr-4 py-2 block text-[13.5px] font-medium text-gray-700 transition-all duration-150 ease-linear hover:text-violet-500 dark:text-gray-300 dark:active:text-white dark:hover:text-white">新規追加</a>
-                                </li>
-                                <li>
-                                    <a href="{{ route('projectMana.index') }}"
-                                        class="pl-14 pr-4 py-2 block text-[13.5px] font-medium text-gray-700 transition-all duration-150 ease-linear hover:text-violet-500 dark:text-gray-300 dark:active:text-white dark:hover:text-white">プロジェクト一覧</a>
-                                </li>
-                            </ul>
-                        </li>
-                    @endif
+                    <li>
+                        <a href="javascript: void(0);" aria-expanded="false"
+                            class="nav-menu pl-6 pr-4 py-3 block text-sm font-medium text-gray-700 transition-all duration-150 ease-linear hover:text-violet-500 dark:text-gray-300 dark:active:text-white dark:hover:text-white">
+                            <i data-feather="folder"></i>
+                            <span data-key="t-auth"> 案件管理</span>
+                        </a>
+                        <ul>
+                            <li>
+                                <a href="{{ route('projectMana.create') }}"
+                                    class="pl-14 pr-4 py-2 block text-[13.5px] font-medium text-gray-700 transition-all duration-150 ease-linear hover:text-violet-500 dark:text-gray-300 dark:active:text-white dark:hover:text-white">新規追加</a>
+                            </li>
+                            <li>
+                                <a href="{{ route('projectMana.index') }}"
+                                    class="pl-14 pr-4 py-2 block text-[13.5px] font-medium text-gray-700 transition-all duration-150 ease-linear hover:text-violet-500 dark:text-gray-300 dark:active:text-white dark:hover:text-white">案件一覧</a>
+                            </li>
+                        </ul>
+                    </li>
                     <!-- @if (Auth::user()->role_id < 2)
                         <li>
                             <a href="javascript: void(0);" aria-expanded="false"
@@ -201,25 +199,6 @@
                             </ul>
                         </li>
                     @endif -->
-                    @if (Auth::user()->role_id < 3)
-                        <li>
-                            <a href="javascript: void(0);" aria-expanded="false"
-                                class="nav-menu pl-6 pr-4 py-3 block text-sm font-medium text-gray-700 transition-all duration-150 ease-linear hover:text-violet-500 dark:text-gray-300 dark:active:text-white dark:hover:text-white">
-                                <i data-feather="arrow-right-circle"></i>
-                                <span data-key="t-auth"> 案件管理</span>
-                            </a>
-                            <ul>
-                                <li>
-                                    <a href="{{ route('depositMana.create') }}"
-                                        class="pl-14 pr-4 py-2 block text-[13.5px] font-medium text-gray-700 transition-all duration-150 ease-linear hover:text-violet-500 dark:text-gray-300 dark:active:text-white dark:hover:text-white">新規追加</a>
-                                </li>
-                                <li>
-                                    <a href="{{ route('depositMana.index') }}"
-                                        class="pl-14 pr-4 py-2 block text-[13.5px] font-medium text-gray-700 transition-all duration-150 ease-linear hover:text-violet-500 dark:text-gray-300 dark:active:text-white dark:hover:text-white">案件一覧</a>
-                                </li>
-                            </ul>
-                        </li>
-                    @endif
                     @if (Auth::user()->role_id < 3)
                         <li>
                             <a href="javascript: void(0);" aria-expanded="false"

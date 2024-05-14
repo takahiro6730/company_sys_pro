@@ -8,6 +8,7 @@ use Auth;
 use App\Models\User;
 use App\Models\Project;
 use App\Models\Unit;
+use App\Models\ProjectType;
 use Carbon\Carbon;
 
 class ProjectController extends Controller
@@ -16,6 +17,22 @@ class ProjectController extends Controller
      * Display a listing of the resource.
      */
 
+    public const progress_state_types =[
+        0 => "未設定",
+        1 => "登録",
+        2 => "案件許可",
+        3 => "請求書作成",
+        4 => "入金",
+        5 => "出金",
+        6 => "完了",
+    ];
+
+    public const compleate_state_types =[
+        0 => "進行中",
+        1 => "完了",
+        2 => "キャンセル",
+    ];
+
     public function __construct()
     {
         $this->middleware('auth');
@@ -23,12 +40,14 @@ class ProjectController extends Controller
 
     public function index()
     {
-        if(Auth::user()->role_id > 2) {
-            return view('error.401');
-        } else {
-            $projects = Project::all();
-            return view("projectMana.index", compact('projects'));
-        }
+        // if(Auth::user()->role_id > 2) {
+        //     return view('error.401');
+        // } else {
+            $progress_state_types = self::progress_state_types;
+            $compleate_state_types = self::compleate_state_types;
+            $projects = Project::where("user_id", Auth::user()->id)->get();
+            return view("projectMana.index", compact('projects', 'progress_state_types', 'compleate_state_types'));
+        // }
     }
 
     /**
@@ -39,9 +58,9 @@ class ProjectController extends Controller
         if(Auth::user()->role_id > 2) {
             return view('error.401');
         } else{
-            $users = User::all();
-            $units = Unit::all();
-            return view('projectMana.create', compact('users', 'units'));
+            $user = Auth::user();
+            $project_types = ProjectType::all();
+            return view('projectMana.create', compact('user', 'project_types'));
         }
     }
 
@@ -50,51 +69,44 @@ class ProjectController extends Controller
      */
     public function store(Request $request)
     {
-        $project_manager = $request->pm;
-        $project_worker = $request->worker;
+        $user_id = Auth::user()->id;
         $title = $request->title;
-        $platform = $request->platform;
+        $worker = $request->worker;
+        $project_type = $request->project_type;
+        $remittance = $request->remittance;
         $amount = $request->amount;
-        $unit = $request->unit;
+        $deposit = $request->deposit;
         $deadline = $request->deadline;
-        $other = $request->other;
+        $comment = $request->comment;
 
         $request->validate(
             [
-            'pm' => ['required'],
-            'worker' => ['required'],
             'title' => ['required'],
-            'platform' => ['required'],
+            'worker' => ['required'],
+            'project_type' => ['required'],
             'amount' => ['required'],
-            'unit' => ['required'],
-            'deadline' => ['required']
             ],
             $messages = [
-                'pm.required' => 'プロジェクト担当者を入力してください。',
-                'worker.required' => '開発者を入力してください。',
                 'title.required' => '案件名を入力してください。',
-                'platform.required' => 'プラットフォームを入力してください。',
+                'worker.required' => '開発者を入力してください。',
+                'project_type.required' => '業務形番号を入力してください。',
                 'amount.required' => '予算額を入力してください。',
-                'unit.required' => '通貨単位を入力してください。',
-                'deadline.required' => '納期日を入力してください。'
             ]
         );
 
-
         $project = new Project();
-        $project->project_manager = $project_manager;
-        $project->project_worker = $project_worker;
+        $project->user_id = $user_id;
+        $project->project_worker = $worker;
         $project->title = $title;
-        $project->platform = $platform;
         $project->amount = $amount;
-        $project->unit_id = $unit;
+        $project->type_id = $project_type;
+        $project->progress_state = 1;
+        $project->compleate_state = 0;
         $project->deadline = $deadline;
-        $project->other = $other;
-        $project->progress = "0";
+        $project->deposit = $deposit;
+        $project->remittance_address = $remittance;
+        $project->project_comment = $comment;
 
-        $currentDate = Carbon::now();
-        $formattedDate = $currentDate->format('Y-m-d');
-        $project->created_at = $currentDate;
         $project->save();
         // Create a new record
 
@@ -150,5 +162,11 @@ class ProjectController extends Controller
         $project->delete();
 
         return "OK";
+    }
+
+    public function project_types_view()
+    {
+        $project_types = ProjectType::all();
+        return view("projectMana.types", compact("project_types"));
     }
 }

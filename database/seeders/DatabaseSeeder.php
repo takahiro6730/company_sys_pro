@@ -12,6 +12,7 @@ use Database\Seeders\UnitSeeder;
 use Database\Seeders\MessageSeeder;
 use Database\Seeders\VerifyQuestionSeeder;
 use Database\Seeders\CountrySeeder;
+use Database\Seeders\ProjectTypeSeeder;
 
 class DatabaseSeeder extends Seeder
 {
@@ -28,6 +29,7 @@ class DatabaseSeeder extends Seeder
             MessageSeeder::class,
             VerifyQuestionSeeder::class,
             CountrySeeder::class,
+            ProjectTypeSeeder::class,
         ]);
     }
 }

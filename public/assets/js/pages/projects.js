@@ -3,6 +3,20 @@ const showDeleteConfirmModal = (project_id) => {
     $("#deleteprojectConfirmModal").removeClass("hidden");
 }
 
+const showRegisterConfirmModal = (e) => {
+    e = e || window.event;
+    e.preventDefault();
+    $("#showRegisterConfirmModal").removeClass("hidden");
+}
+
+const sendform = () => {
+    $("#create_form").submit();
+}
+
+const closeRegisterConfirmModal = () => {
+    $("#showRegisterConfirmModal").addClass("hidden");
+}
+
 const deleteproject = () => {
     let project_id = $("#delete_project").val();
     $.post("projectMana/destroy", {

@@ -121,11 +121,13 @@ Route::middleware(['verified', 'userChecked'])->group(function () {
 
     Route::get('projectMana/{projectMana}', [ProjectController::class, 'show'])->name('projectMana.show');
 
-    Route::get('projectMana/{projectMana}/edit', [ProjectController::class, 'edit'])->name('projectMana.edit');
+    Route::get('projectMana/{id}/edit', [ProjectController::class, 'edit'])->name('projectMana.edit');
 
     Route::post('projectMana/update', [ProjectController::class, 'update'])->name('projectMana.update');
 
     Route::post('projectMana/destroy', [ProjectController::class, 'destroy'])->name('projectMana.destroy');
+
+    Route::get('/projectType', [ProjectController::class, 'project_types_view'])->name('projectMana.types');
 
 });
 
@@ -187,5 +189,6 @@ Route::middleware(['verified', 'userChecked'])->group(function () {
     // Route::post('message/delete', [MessageController::class, 'destroy'])->name('message.delete');
 
 });
+
 
 Route::get('/error/401', [ErrorController::class, 'error_401'])->name('error_401');
