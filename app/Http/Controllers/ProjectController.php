@@ -127,6 +127,7 @@ class ProjectController extends Controller
     public function edit(string $id)
     {
         //
+        dd("ertyuio");
     }
 
     /**
@@ -168,5 +169,17 @@ class ProjectController extends Controller
     {
         $project_types = ProjectType::all();
         return view("projectMana.types", compact("project_types"));
+    }
+
+    public function admin_index()
+    {
+        if(Auth::user()->role_id > 2) {
+            return view('error.401');
+        } else {
+            $progress_state_types = self::progress_state_types;
+            $compleate_state_types = self::compleate_state_types;
+            $projects = Project::all();
+            return view("projectMana.admin.index", compact('projects', 'progress_state_types', 'compleate_state_types'));
+        }
     }
 }

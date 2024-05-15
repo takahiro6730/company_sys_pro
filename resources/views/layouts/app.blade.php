@@ -162,43 +162,25 @@
                             </li>
                         </ul>
                     </li>
-                    <!-- @if (Auth::user()->role_id < 2)
+                    @if (Auth::user()->role_id < 2)
                         <li>
                             <a href="javascript: void(0);" aria-expanded="false"
                                 class="nav-menu pl-6 pr-4 py-3 block text-sm font-medium text-gray-700 transition-all duration-150 ease-linear hover:text-violet-500 dark:text-gray-300 dark:active:text-white dark:hover:text-white">
                                 <i data-feather="arrow-right-circle"></i>
-                                <span data-key="t-auth"> 入金管理</span>
+                                <span data-key="t-auth"> 入出金管理</span>
                             </a>
                             <ul>
-                                <li>
+                                <!-- <li>
                                     <a href="{{ route('depositMana.create') }}"
                                         class="pl-14 pr-4 py-2 block text-[13.5px] font-medium text-gray-700 transition-all duration-150 ease-linear hover:text-violet-500 dark:text-gray-300 dark:active:text-white dark:hover:text-white">新規追加</a>
-                                </li>
+                                </li> -->
                                 <li>
-                                    <a href="{{ route('depositMana.index') }}"
-                                        class="pl-14 pr-4 py-2 block text-[13.5px] font-medium text-gray-700 transition-all duration-150 ease-linear hover:text-violet-500 dark:text-gray-300 dark:active:text-white dark:hover:text-white">入金一覧</a>
+                                    <a href="{{ route('projectMana.admin.index') }}"
+                                        class="pl-14 pr-4 py-2 block text-[13.5px] font-medium text-gray-700 transition-all duration-150 ease-linear hover:text-violet-500 dark:text-gray-300 dark:active:text-white dark:hover:text-white">案件一覧</a>
                                 </li>
                             </ul>
                         </li>
-
-                        <li>
-                            <a href="javascript: void(0);" aria-expanded="false"
-                                class="nav-menu pl-6 pr-4 py-3 block text-sm font-medium text-gray-700 transition-all duration-150 ease-linear hover:text-violet-500 dark:text-gray-300 dark:active:text-white dark:hover:text-white">
-                                <i data-feather="arrow-left-circle"></i>
-                                <span data-key="t-auth"> 出金管理</span>
-                            </a>
-                            <ul>
-                                <li>
-                                    <a href="{{ route('withdrawMana.create') }}"
-                                        class="pl-14 pr-4 py-2 block text-[13.5px] font-medium text-gray-700 transition-all duration-150 ease-linear hover:text-violet-500 dark:text-gray-300 dark:active:text-white dark:hover:text-white">新規追加</a>
-                                </li>
-                                <li>
-                                    <a href="{{ route('withdrawMana.index') }}"
-                                        class="pl-14 pr-4 py-2 block text-[13.5px] font-medium text-gray-700 transition-all duration-150 ease-linear hover:text-violet-500 dark:text-gray-300 dark:active:text-white dark:hover:text-white">出金一覧</a>
-                                </li>
-                            </ul>
-                        </li>
-                    @endif -->
+                    @endif
                     @if (Auth::user()->role_id < 3)
                         <li>
                             <a href="javascript: void(0);" aria-expanded="false"
