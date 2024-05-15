@@ -129,6 +129,8 @@ Route::middleware(['verified', 'userChecked'])->group(function () {
 
     Route::get('/projectType', [ProjectController::class, 'project_types_view'])->name('projectMana.types');
 
+    Route::get('projectManaAdmin/', [ProjectController::class, 'admin_index'])->name('projectMana.admin.index');
+
 });
 
 // DepositController Routes
