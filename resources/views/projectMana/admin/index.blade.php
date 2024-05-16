@@ -20,13 +20,13 @@
 
             <div class="grid grid-cols-1 mb-5">
                 <div class="flex items-center justify-between">
-                    <h4 class="mb-sm-0 text-lg font-semibold grow text-gray-800 dark:text-gray-100">プロジェクト一覧</h4>
+                    <h4 class="mb-sm-0 text-lg font-semibold grow text-gray-800 dark:text-gray-100">案件一覧</h4>
                     <nav class="flex" aria-label="Breadcrumb">
                         <ol class="inline-flex items-center space-x-1 ltr:md:space-x-3 rtl:md:space-x-0">
                             <li class="inline-flex items-center">
                                 <a href="javascript:;"
                                     class="inline-flex items-center text-sm font-medium text-gray-800 hover:text-gray-900 dark:text-zinc-100 dark:hover:text-white">
-                                    案件管理
+                                    入出金管理
                                 </a>
                             </li>
                             <li>
@@ -141,7 +141,7 @@
                                             {{ $project->updated_at->format('Y-m-d') }}</td>
                                         <td
                                             class="p-4 pr-8 border rtl:border-l border-t-0 border-l-0 border-gray-50 dark:border-zinc-600">
-                                            <a href="{{ route('projectMana.admin.edit', ['id'=>$project->id]) }}"
+                                            <a href="{{ route('projectMana.admin.detail', ['id'=>$project->id]) }}"
                                                 class="btn text-white bg-green-500 border-green-500 hover:bg-green-600 hover:border-green-600 focus:bg-green-600 focus:border-green-600 focus:ring focus:ring-green-500/30 active:bg-green-600 active:border-green-600">
                                                 <i class="bx bx-pencil text-16 align-middle"></i>
                                             </a>

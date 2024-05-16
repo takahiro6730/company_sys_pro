@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+use App\Http\Controllers\App;
 use Auth;
 use App\Models\User;
 use App\Models\Project;
@@ -18,20 +19,21 @@ class ProjectController extends Controller
      */
 
     public const progress_state_types =[
-        0 => "未設定",
+        // 0 => "未設定",
         1 => "登録",
-        2 => "案件許可",
-        3 => "請求書作成",
-        4 => "入金",
-        5 => "出金",
-        6 => "完了",
+        2 => "担当者選定",
+        3 => "案件許可",
+        4 => "請求書作成",
+        5 => "入金",
+        6 => "出金",
+        7 => "完了",
     ];
 
     public const compleate_state_types =[
         0 => "進行中",
         1 => "完了",
         2 => "キャンセル",
-    ];
+    ];  
 
     public function __construct()
     {
@@ -181,5 +183,32 @@ class ProjectController extends Controller
             $projects = Project::all();
             return view("projectMana.admin.index", compact('projects', 'progress_state_types', 'compleate_state_types'));
         }
+    }
+
+    public function admin_detail($id)
+    {
+        $project = Project::find($id);
+        $project_types = ProjectType::all();
+        $managers = User::where('role_id', '<=', '2')->get();
+        $progress_state_types = self::progress_state_types;
+        $compleate_state_types = self::compleate_state_types;
+        return view('projectMana.admin.edit', compact('project', 'project_types', 'managers', 'progress_state_types', 'compleate_state_types'));
+    }
+
+    public function manager_select(Request $request)
+    {
+        $project = Project::find($request->project_id);
+        $manager_id = $request->manager_id;
+        $project->project_manager = $manager_id;
+        $saved = $project->save();
+        if(!$saved){
+            return "FAILED";
+        }
+        $project->progress_state = 2;
+        $saved = $project->save();
+        if(!$saved){
+            return "UPDATE FAILED";
+        }
+        return "OK";
     }
 }
