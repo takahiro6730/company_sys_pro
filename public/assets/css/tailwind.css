@@ -2319,6 +2319,18 @@ h6 {
     max-width: 20rem !important;
 }
 
+.max-w-40 {
+    max-width: 10rem;
+}
+
+.max-w-60 {
+    max-width: 15rem;
+}
+
+.max-w-80 {
+    max-width: 20rem;
+}
+
 .flex-1 {
     -webkit-box-flex: 1 !important;
     -ms-flex: 1 1 0% !important;
