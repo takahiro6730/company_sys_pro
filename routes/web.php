@@ -134,6 +134,8 @@ Route::middleware(['verified', 'userChecked'])->group(function () {
     Route::get('projectManaDetail/{id}', [ProjectController::class, 'admin_detail'])->name('projectMana.admin.detail');
 
     Route::post('projectManaAdmin/managerSelect', [ProjectController::class, 'manager_select'])->name('projectMana.admin.manager_select');
+    
+    Route::post('projectManaAdmin/projectAllow', [ProjectController::class, 'project_allow'])->name('projectMana.admin.project_allow');
 
 });
 

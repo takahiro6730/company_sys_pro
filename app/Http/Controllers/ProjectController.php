@@ -129,7 +129,11 @@ class ProjectController extends Controller
     public function edit(string $id)
     {
         //
-        dd("ertyuio");
+        $project = Project::find($id);
+        $project_types = ProjectType::all();
+        $progress_state_types = self::progress_state_types;
+        $compleate_state_types = self::compleate_state_types;
+        return view('projectMana.edit_1', compact('project', 'project_types', 'progress_state_types', 'compleate_state_types'));
     }
 
     /**
@@ -197,6 +201,10 @@ class ProjectController extends Controller
 
     public function manager_select(Request $request)
     {
+        $current_user = User::find($request->auther_id);
+        if(Auth::user()->role_id > 2 || $current_user->id != Auth::user()->id || $current_user->role_id > 2) {
+            return "NO PERMISSIOM";
+        }
         $project = Project::find($request->project_id);
         $manager_id = $request->manager_id;
         $project->project_manager = $manager_id;
@@ -209,6 +217,23 @@ class ProjectController extends Controller
         if(!$saved){
             return "UPDATE FAILED";
         }
+        return "OK";
+    }
+    
+    public function project_allow(Request $request)
+    {
+        $current_user = User::find($request->auther_id);
+        if(Auth::user()->role_id > 2 || $current_user->id != Auth::user()->id || $current_user->role_id > 2) {
+            return "NO PERMISSIOM";
+        }
+        $project = Project::find($request->project_id);
+
+        $project->progress_state = 3;
+        $saved = $project->save();
+        if(!$saved){
+            return "UPDATE FAILED";
+        }
+
         return "OK";
     }
 }

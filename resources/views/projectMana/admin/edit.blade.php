@@ -4,7 +4,6 @@
 <div class="main-content overflow-auto">
     <div class="page-content dark:bg-zinc-700">
         <div class="container-fluid px-[0.625rem]">
-            <form action="{{ route('projectMana.store')}}" method="post" id="create_form">
                 @csrf
                 <div class="grid grid-cols-1 mb-5">
                     <div class="flex items-center justify-between">
@@ -42,7 +41,7 @@
                                     <div class="mb-4">
                                         <label for="user_name"
                                             class="block font-medium text-gray-700 dark:text-gray-100 mb-2">ユーザー名
-                                            *</label>
+                                           </label>
                                         <input
                                             class="w-full rounded border-gray-100 py-2.5 text-sm text-gray-500 focus:border focus:border-violet-500 focus:ring-0 dark:bg-zinc-700/50 dark:border-zinc-600 dark:text-zinc-100"
                                             type="text" value="{{ $project->project_user->nickname }}" name="user_name"
@@ -56,7 +55,7 @@
                                     <div class="mb-4">
                                         <label for="title"
                                             class="block font-medium text-gray-700 dark:text-gray-100 mb-2">案件名
-                                            *</label>
+                                           </label>
                                         <input
                                             class="w-full rounded border-gray-100 py-2.5 text-sm text-gray-500 focus:border focus:border-violet-500 focus:ring-0 dark:bg-zinc-700/50 dark:border-zinc-600 dark:text-zinc-100"
                                             type="text" value="{{ $project->title }}" name="title" id="title" readonly>
@@ -69,7 +68,7 @@
                                     <div class="mb-4">
                                         <label for="worker"
                                             class="block font-medium text-gray-700 dark:text-gray-100 mb-2">開発者
-                                            *</label>
+                                           </label>
                                         <input
                                             class="w-full rounded border-gray-100 py-2.5 text-sm text-gray-500 focus:border focus:border-violet-500 focus:ring-0 dark:bg-zinc-700/50 dark:border-zinc-600 dark:text-zinc-100"
                                             type="text" name="worker" value="{{ $project->project_worker }}" id="worker"
@@ -136,7 +135,7 @@
                                     <div class="mb-4">
                                         <label for="deposit"
                                             class="block font-medium text-gray-700 dark:text-gray-100 mb-2">支払予定日
-                                            *</label>
+                                           </label>
                                         <input
                                             class="w-full rounded border-gray-100 placeholder:text-sm focus:border focus:border-violet-500 focus:ring-0 dark:bg-zinc-700/50 dark:border-zinc-600 dark:text-zinc-100"
                                             type="date" name="deposit" id="deposit" value="{{ $project->deposit }}"
@@ -150,7 +149,7 @@
                                     <div class="mb-4">
                                         <label for="deadline"
                                             class="block font-medium text-gray-700 dark:text-gray-100 mb-2">希望出金日
-                                            *</label>
+                                           </label>
                                         <input
                                             class="w-full rounded border-gray-100 placeholder:text-sm focus:border focus:border-violet-500 focus:ring-0 dark:bg-zinc-700/50 dark:border-zinc-600 dark:text-zinc-100"
                                             type="date" name="deadline" id="deadline" value="{{ $project->deadline }}"
@@ -170,6 +169,23 @@
                                             readonly>{{ $project->project_comment }}</textarea>
                                     </div>
                                 </div>
+                                <div class="col-span-12 lg:col-span-12 text-right">
+                                    <button class="bg-red-500 hover:bg-red-400 text-white font-bold py-2 px-4 border-b-4 border-red-700 hover:border-red-500 rounded">
+                                        案件削除
+                                    </button>
+                                    <button class="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow">
+                                        開発者に連絡
+                                    </button>
+                                    @if (isset($project->invoice_id))
+                                    <button class="bg-blue-500 hover:bg-blue-400 text-white font-bold py-2 px-4 border-b-4 border-blue-700 hover:border-blue-500 rounded">
+                                        請求書を見る
+                                    </button>
+                                    @else
+                                    <button class="bg-blue-500 text-white font-bold py-2 px-4 rounded opacity-50 cursor-not-allowed">
+                                        請求書を見る
+                                    </button>
+                                    @endif
+                                </div>
                                 <div class="col-span-12 lg:col-span-12">
                                     @include('projectMana.admin.progress_state')
                                 </div>
@@ -177,7 +193,6 @@
                         </div>
                     </div>
                 </div>
-            </form>
             <!-- Footer Start -->
             <footer
                 class="footer absolute bottom-0 right-0 left-0 border-t border-gray-50 py-5 px-5 bg-white dark:bg-zinc-700 dark:border-zinc-600 dark:text-gray-200">
@@ -218,7 +233,7 @@
                             キャンセル
                         </button>
                         <button type="submit" class="btn bg-violet-500 border-transparent text-white mx-4 px-8"
-                            onclick="sendform()">
+                            onclick="checkConfirmModal()">
                             登録
                         </button>
                     </div>
@@ -229,7 +244,7 @@
 </div>
 <input type="hidden" value="{{ Auth::user()->id }}" name="auther_id" id="auther_id">
 <input type="hidden" value="{{ $project->id }}" name="project_id" id="project_id">
-
+<input type="hidden" value="" name="current_seq" id="current_seq">
 <div class="relative z-50 modal hidden" id="cannotModal" aria-labelledby="modal-title" role="dialog"
     aria-modal="true">
     <div class="fixed inset-0 z-50 overflow-hidden bg-gray-500/75">

@@ -103,7 +103,7 @@
                                             {{ $i ++ }}</td>
                                         <td
                                             class="p-4 pr-8 border border-t-0 border-l-0 border-gray-50 dark:border-zinc-600">
-                                            {{ isset($project->project_manager)? $project->project_manager : "未設定" }}</td>
+                                            {{ isset($project->project_manager)? $project->user->nickname : "未設定" }}</td>
                                         <td
                                             class="p-4 pr-8 border border-t-0 border-l-0 border-gray-50 dark:border-zinc-600">
                                             {{ $project->project_worker }}
@@ -113,7 +113,7 @@
                                             {{ $project->title }}</td>
                                         <td class="p-4 pr-8 border border-t-0 border-l-0 border-gray-50 dark:border-zinc-600"
                                             style="text-align: center;">
-                                            {{ $progress_state_types[$project->progress_state]."-".$compleate_state_types[$project->compleate_state] }}
+                                            {{ $progress_state_types[$project->progress_state]." ー ".$compleate_state_types[$project->compleate_state] }}
                                         </td>
                                         <td
                                             class="p-4 pr-8 border border-t-0 border-l-0 border-gray-50 dark:border-zinc-600">

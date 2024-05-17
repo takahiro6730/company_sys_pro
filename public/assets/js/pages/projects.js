@@ -74,6 +74,8 @@ const progress_update = (seq) => {
                 break;
             case 3:
                 // code block
+                $("#current_seq").val(seq)
+                showProgressConfirmModal()
                 break;
             case 4:
                 // code block
@@ -139,4 +141,25 @@ const selectManager = () => {
         }
         else alert(res);
     });
+}
+
+const sendProjectAllow = () => {
+    let project_id = $("#project_id").val();
+    let auther_id = $("#auther_id").val();
+    $.post("/projectManaAdmin/projectAllow", {
+        _token: $('meta[name="csrf-token"]').attr('content'),
+        "project_id": project_id,
+        "auther_id": auther_id,
+    }, function (res) {
+        if (res == "OK") {
+            location.reload()
+        }
+        else alert(res);
+    });
+}
+
+const checkConfirmModal = () => {
+    seq = $("#current_seq").val()
+    if(seq == 3) sendProjectAllow();
+    else alert("Do Nothing")
 }
