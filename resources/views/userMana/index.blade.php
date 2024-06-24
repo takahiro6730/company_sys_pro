@@ -93,9 +93,10 @@
                                                 <td class="p-4 pr-8 border border-t-0 border-l-0 border-gray-50 dark:border-zinc-600"
                                                     style="text-align: center;">
                                                     <div class="form-check form-switch">
-                                                        <input class="form-check-input" type="checkbox" onclick="return false;"
+                                                        <!-- <input class="form-check-input" type="checkbox" onclick="return false;"
                                                             name="darkmode"
-                                                            value="yes" @if ($user->confirmed != null && $user->confirmed == 1) checked @endif>
+                                                            value="yes" > -->
+                                                            @if ($user->confirmed != null && $user->confirmed == 1) 確認済み @else 未確認 @endif 
                                                     </div>
                                                 </td>
                                                 <td class="p-4 pr-8 border border-t-0 border-l-0 border-gray-50 dark:border-zinc-600"

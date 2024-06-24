@@ -125,7 +125,13 @@ Route::middleware(['verified', 'userChecked'])->group(function () {
 
     Route::post('projectMana/update', [ProjectController::class, 'update'])->name('projectMana.update');
 
+    Route::post('projectMana/uploadInvoice', [ProjectController::class, 'uploadInvoice'])->name('projectMana.uploadInvoice');
+
+    Route::get('projectMana/showInvoice/{id}', [ProjectController::class, 'showInvoice'])->name('projectMana.showInvoice');
+
     Route::post('projectMana/destroy', [ProjectController::class, 'destroy'])->name('projectMana.destroy');
+
+    Route::post('projectMana/state_cancel', [ProjectController::class, 'state_cancel'])->name('projectMana.state_cancel');
 
     Route::get('/projectType', [ProjectController::class, 'project_types_view'])->name('projectMana.types');
 
@@ -136,6 +142,14 @@ Route::middleware(['verified', 'userChecked'])->group(function () {
     Route::post('projectManaAdmin/managerSelect', [ProjectController::class, 'manager_select'])->name('projectMana.admin.manager_select');
     
     Route::post('projectManaAdmin/projectAllow', [ProjectController::class, 'project_allow'])->name('projectMana.admin.project_allow');
+
+    Route::post('projectManaAdmin/invoiceAllow', [ProjectController::class, 'invoice_allow'])->name('projectMana.admin.invoice_allow');
+    
+    Route::post('projectManaAdmin/paymentCheck', [ProjectController::class, 'paymentCheck'])->name('projectMana.admin.paymentCheck');
+
+    Route::post('projectManaAdmin/transferCheck', [ProjectController::class, 'transferCheck'])->name('projectMana.admin.transferCheck');
+
+    Route::post('projectManaAdmin/projectComplete', [ProjectController::class, 'projectComplete'])->name('projectMana.admin.projectComplete');
 
 });
 

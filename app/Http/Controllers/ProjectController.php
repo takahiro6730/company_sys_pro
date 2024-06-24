@@ -11,6 +11,9 @@ use App\Models\Project;
 use App\Models\Unit;
 use App\Models\ProjectType;
 use Carbon\Carbon;
+use Storage;
+use App\Models\projectInvoice;
+use Response;
 
 class ProjectController extends Controller
 {
@@ -29,7 +32,7 @@ class ProjectController extends Controller
         7 => "完了",
     ];
 
-    public const compleate_state_types =[
+    public const complete_state_types =[
         0 => "進行中",
         1 => "完了",
         2 => "キャンセル",
@@ -46,9 +49,9 @@ class ProjectController extends Controller
         //     return view('error.401');
         // } else {
             $progress_state_types = self::progress_state_types;
-            $compleate_state_types = self::compleate_state_types;
+            $complete_state_types = self::complete_state_types;
             $projects = Project::where("user_id", Auth::user()->id)->get();
-            return view("projectMana.index", compact('projects', 'progress_state_types', 'compleate_state_types'));
+            return view("projectMana.index", compact('projects', 'progress_state_types', 'complete_state_types'));
         // }
     }
 
@@ -57,8 +60,8 @@ class ProjectController extends Controller
      */
     public function create()
     {
-        if(Auth::user()->role_id > 2) {
-            return view('error.401');
+        if(Auth::user()->confirmed === null || Auth::user()->confirmed == 0) {
+            return view('error.403');
         } else{
             $user = Auth::user();
             $project_types = ProjectType::all();
@@ -103,7 +106,7 @@ class ProjectController extends Controller
         $project->amount = $amount;
         $project->type_id = $project_type;
         $project->progress_state = 1;
-        $project->compleate_state = 0;
+        $project->complete_state = 0;
         $project->deadline = $deadline;
         $project->deposit = $deposit;
         $project->remittance_address = $remittance;
@@ -132,8 +135,9 @@ class ProjectController extends Controller
         $project = Project::find($id);
         $project_types = ProjectType::all();
         $progress_state_types = self::progress_state_types;
-        $compleate_state_types = self::compleate_state_types;
-        return view('projectMana.edit_1', compact('project', 'project_types', 'progress_state_types', 'compleate_state_types'));
+        $complete_state_types = self::complete_state_types;
+        if($project->complete_state == 2) return view('error.400');
+        return view('projectMana.edit_1', compact('project', 'project_types', 'progress_state_types', 'complete_state_types'));
     }
 
     /**
@@ -159,6 +163,51 @@ class ProjectController extends Controller
         return "OK";
     }
 
+    public function uploadInvoice(Request $request){
+        $request->validate([
+            'file' => 'required|file|mimes:pdf,doc,docx,jpg,png|max:4096',
+            'project_id' => 'required|integer',
+            'auther_id' => 'required|integer'
+        ]);
+
+        if ($request->hasFile('file')) {
+            $file = $request->file('file');
+            $fileName = time() . '_' . $file->getClientOriginalName();
+            $filePath = $file->storeAs('invoices', $fileName, 'public');
+
+            $projectInvoice = new projectInvoice();
+            $projectInvoice->projectId =  $request->project_id;
+            $projectInvoice->filepath =  $filePath;
+            $projectInvoice->save();
+
+            $project = Project::find($request->project_id);
+            $project->invoice_id = $projectInvoice->id;
+            $project->save();
+
+            return response()->json('OK');
+        }
+
+        return response()->json('File not uploaded', 400);
+    }
+
+    public function showInvoice($id)
+    {
+        $invoice = projectInvoice::findOrFail($id);
+        $filePath = $invoice->filepath;
+        $fileName = "invoice";
+        
+        if (Storage::disk('public')->exists($filePath)) {
+            $pdfContent = Storage::disk('public')->get($filePath);
+
+            return response($pdfContent, 200)
+            ->header('Content-Type', 'application/pdf')
+            ->header('Content-Disposition', 'inline; filename="' . $fileName . '"')
+            ->header('X-Content-Type-Options', 'nosniff');
+        }
+
+        return abort(404, 'File not found');
+    }
+
     /**
      * Remove the specified resource from storage.
      */
@@ -169,6 +218,24 @@ class ProjectController extends Controller
         $project->delete();
 
         return "OK";
+    }
+
+    public function state_cancel(Request $request)
+    {
+        $id = $request->delete_project;
+        if(Auth::user()->role_id > 2) {
+            $user = Auth::user();
+            $project = Project::find($id);
+            if($user->id !== $project->user_id) return "ERROR: INVALID USER";
+            $project->complete_state = 2;
+            $project->save();
+            return redirect(route('projectMana.index'));
+        } else {
+            $project = Project::find($id);
+            $project->complete_state = 2;
+            $project->save();
+            return redirect(route('projectMana.admin.index'));
+        }
     }
 
     public function project_types_view()
@@ -183,9 +250,9 @@ class ProjectController extends Controller
             return view('error.401');
         } else {
             $progress_state_types = self::progress_state_types;
-            $compleate_state_types = self::compleate_state_types;
+            $complete_state_types = self::complete_state_types;
             $projects = Project::all();
-            return view("projectMana.admin.index", compact('projects', 'progress_state_types', 'compleate_state_types'));
+            return view("projectMana.admin.index", compact('projects', 'progress_state_types', 'complete_state_types'));
         }
     }
 
@@ -195,8 +262,8 @@ class ProjectController extends Controller
         $project_types = ProjectType::all();
         $managers = User::where('role_id', '<=', '2')->get();
         $progress_state_types = self::progress_state_types;
-        $compleate_state_types = self::compleate_state_types;
-        return view('projectMana.admin.edit', compact('project', 'project_types', 'managers', 'progress_state_types', 'compleate_state_types'));
+        $complete_state_types = self::complete_state_types;
+        return view('projectMana.admin.edit', compact('project', 'project_types', 'managers', 'progress_state_types', 'complete_state_types'));
     }
 
     public function manager_select(Request $request)
@@ -229,6 +296,76 @@ class ProjectController extends Controller
         $project = Project::find($request->project_id);
 
         $project->progress_state = 3;
+        $saved = $project->save();
+        if(!$saved){
+            return "UPDATE FAILED";
+        }
+
+        return "OK";
+    }
+    
+    public function invoice_allow(Request $request)
+    {
+        $current_user = User::find($request->auther_id);
+        if(Auth::user()->role_id > 2 || $current_user->id != Auth::user()->id || $current_user->role_id > 2) {
+            return "NO PERMISSIOM";
+        }
+        $project = Project::find($request->project_id);
+
+        $project->progress_state = 4;
+        $saved = $project->save();
+        if(!$saved){
+            return "UPDATE FAILED";
+        }
+
+        return "OK";
+    }
+
+    public function paymentCheck(Request $request)
+    {
+        $current_user = User::find($request->auther_id);
+        if(Auth::user()->role_id > 2 || $current_user->id != Auth::user()->id || $current_user->role_id > 2) {
+            return "NO PERMISSIOM";
+        }
+        $project = Project::find($request->project_id);
+
+        $project->amount = $request->pay_amoumt;
+        $project->progress_state = 5;
+        $saved = $project->save();
+        if(!$saved){
+            return "UPDATE FAILED";
+        }
+
+        return "OK";
+    }
+
+    public function transferCheck(Request $request)
+    {
+        $current_user = User::find($request->auther_id);
+        if(Auth::user()->role_id > 2 || $current_user->id != Auth::user()->id || $current_user->role_id > 2) {
+            return "NO PERMISSIOM";
+        }
+        $project = Project::find($request->project_id);
+
+        $project->progress_state = 6;
+        $saved = $project->save();
+        if(!$saved){
+            return "UPDATE FAILED";
+        }
+
+        return "OK";
+    }
+
+    public function projectComplete(Request $request)
+    {
+        $current_user = User::find($request->auther_id);
+        if(Auth::user()->role_id > 2 || $current_user->id != Auth::user()->id || $current_user->role_id > 2) {
+            return "NO PERMISSIOM";
+        }
+        $project = Project::find($request->project_id);
+
+        $project->progress_state = 7;
+        $project->complete_state = 2;
         $saved = $project->save();
         if(!$saved){
             return "UPDATE FAILED";

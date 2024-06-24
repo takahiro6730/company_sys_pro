@@ -71,7 +71,7 @@
                                             進行状況</th>
                                         <th
                                             class="p-4 pr-8 border border-y-2 border-gray-50 dark:border-zinc-600 border-l-0">
-                                            予算額</th>
+                                             入金額 | 予算額</th>
                                         <th
                                             class="p-4 pr-8 border rtl:border-l border-y-2 border-gray-50 dark:border-zinc-600 border-l-0">
                                             業務形式番号</th>
@@ -113,7 +113,7 @@
                                             {{ $project->title }}</td>
                                         <td class="p-4 pr-8 border border-t-0 border-l-0 border-gray-50 dark:border-zinc-600"
                                             style="text-align: center;">
-                                            {{ $progress_state_types[$project->progress_state]." ー ".$compleate_state_types[$project->compleate_state] }}
+                                            {{ $progress_state_types[$project->progress_state]." ー ".$complete_state_types[$project->complete_state] }}
                                         </td>
                                         <td
                                             class="p-4 pr-8 border border-t-0 border-l-0 border-gray-50 dark:border-zinc-600">
@@ -135,10 +135,14 @@
                                             {{ $project->updated_at->format('Y-m-d') }}</td>
                                         <td
                                             class="p-4 pr-8 border rtl:border-l border-t-0 border-l-0 border-gray-50 dark:border-zinc-600">
+                                            @if ($project->complete_state == 2)
+                                            キャンセル
+                                            @else
                                             <a href="{{ route('projectMana.edit', ['id'=>$project->id]) }}"
                                                 class="btn text-white bg-green-500 border-green-500 hover:bg-green-600 hover:border-green-600 focus:bg-green-600 focus:border-green-600 focus:ring focus:ring-green-500/30 active:bg-green-600 active:border-green-600">
                                                 <i class="bx bx-pencil text-16 align-middle"></i>
                                             </a>
+                                            @endif
                                         </td>
                                         <!-- <td
                                             class="p-4 pr-8 border rtl:border-l border-t-0 border-l-0 border-gray-50 dark:border-zinc-600">

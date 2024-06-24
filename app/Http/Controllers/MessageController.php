@@ -97,6 +97,6 @@ class MessageController extends Controller
 
     public function message_notification($message, $origin_user, $receive_user)
     {
-        Mail::to($receive_user->email)->send(new MessageNotification($message, $origin_user, $receive_user));
+        // Mail::to($receive_user->email)->send(new MessageNotification($message, $origin_user, $receive_user));
     }
 }
