@@ -74,7 +74,7 @@
                                             進行状況</th>
                                         <th
                                             class="p-4 pr-8 border border-y-2 border-gray-50 dark:border-zinc-600 border-l-0">
-                                            予算額</th>
+                                            入金額 | 予算額</th>
                                         <th
                                             class="p-4 pr-8 border rtl:border-l border-y-2 border-gray-50 dark:border-zinc-600 border-l-0">
                                             業務形式番号</th>
@@ -119,7 +119,7 @@
                                             {{ $project->title }}</td>
                                         <td class="p-4 pr-8 border border-t-0 border-l-0 border-gray-50 dark:border-zinc-600"
                                             style="text-align: center;">
-                                            {{ $progress_state_types[$project->progress_state]." ー ".$compleate_state_types[$project->compleate_state] }}
+                                            {{ $progress_state_types[$project->progress_state]." ー ".$complete_state_types[$project->complete_state] }}
                                         </td>
                                         <td
                                             class="p-4 pr-8 border border-t-0 border-l-0 border-gray-50 dark:border-zinc-600">

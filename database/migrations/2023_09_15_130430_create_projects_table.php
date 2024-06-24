@@ -21,7 +21,7 @@ return new class extends Migration
             $table->integer("amount")->nullable();
             $table->integer("type_id")->nullable();
             $table->integer("progress_state");
-            $table->integer("compleate_state");
+            $table->integer("complete_state");
             $table->date("deadline")->nullable();
             $table->date("deposit")->nullable();
             $table->integer("invoice_id")->nullable();

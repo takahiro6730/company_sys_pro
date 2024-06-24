@@ -2634,6 +2634,10 @@ h6 {
     cursor: text !important;
 }
 
+.cursor-not-allowed {
+    cursor: not-allowed;
+}
+
 .touch-auto {
     -ms-touch-action: auto !important;
     touch-action: auto !important;

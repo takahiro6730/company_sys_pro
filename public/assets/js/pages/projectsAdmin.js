@@ -69,16 +69,19 @@ const progress_update = (seq) => {
                 showProgressConfirmModal()
                 break;
             case 4:
-                // code block
+                confirmInvoice();
                 break;
             case 5:
                 // code block
+                confirmPay();
                 break;
             case 6:
                 // code block
+                confirmOut();
                 break;
             case 7:
                 // code block
+                confirmComplete();
                 break;
             default:
                 alert("cannot confirm!")
@@ -107,6 +110,7 @@ const closeCannotModal = () => {
 }
 
 const showManagerModal = () => {
+    // $("#managerModal").find("#caption").text()
     $("#managerModal").removeClass("hidden");
 }
 
@@ -125,6 +129,8 @@ const selectManager = () => {
         "manager_id": manager_id,
     }, function (res) {
         if (res == "OK") {
+            // $("#editprojectModal").addClass("hidden");
+            // $("#projectChangedModal").removeClass("hidden");
             location.reload()
         }
         else alert(res);
@@ -152,42 +158,96 @@ const checkConfirmModal = () => {
     else alert("Do Nothing")
 }
 
-const clickUploadInvoice = () => {
-    var input = document.createElement('input');
-    input.type = 'file';
-    input.onchange = e => {
-        var file = e.target.files[0];
-        var fd = new FormData();
-        fd.append('file', file);
-        fd.append('project_id', $("#project_id").val());
-        fd.append('auther_id', $("#auther_id").val());
+const confirmInvoice = () => {
+    $("#invoiceConfirmModal").removeClass("hidden");
+}
 
-        postUrl = $("#uploadInvoice").val();
-        alert(postUrl)
+const checkInvoiceModal = () => {
+    let project_id = $("#project_id").val();
+    let auther_id = $("#auther_id").val();
+    $.post("/projectManaAdmin/invoiceAllow", {
+        _token: $('meta[name="csrf-token"]').attr('content'),
+        "project_id": project_id,
+        "auther_id": auther_id,
+    }, function (res) {
+        if (res == "OK") {
+            location.reload()
+        }
+        else alert(res);
+    });
+}
 
-        $.ajax({
-            url: postUrl,
-            type: 'POST',
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            },
-            data: fd,
-            contentType: false,
-            processData: false,
-            cache: false,
-            enctype: 'multipart/form-data',
-            success: function (res) {
-                if (res == "OK") {
-                    location.reload();
-                } else {
-                    alert(res);
-                }
-            },
-            error: function (xhr, status, error) {
-                console.error("Error: " + error);
-                alert("エラーが発生しました。請求書ファイルのサイズが5MB以上でなければなりません。");
-            }
-        });
-    }
-    input.click();
+const closeInvoiceModal = () => {
+    $("#invoiceConfirmModal").addClass("hidden");
+}
+
+const confirmPay = () => {
+    $("#payConfirmModal").removeClass("hidden");
+}
+
+const checkPayModal = () => {
+    let project_id = $("#project_id").val();
+    let auther_id = $("#auther_id").val();
+    let pay_amoumt = $("#pay_amoumt").val();
+    $.post("/projectManaAdmin/paymentCheck", {
+        _token: $('meta[name="csrf-token"]').attr('content'),
+        "project_id": project_id,
+        "auther_id": auther_id,
+        "pay_amoumt": pay_amoumt,
+    }, function (res) {
+        if (res == "OK") {
+            location.reload()
+        }
+        else alert(res);
+    });
+}
+
+const closePayModal = () => {
+    $("#payConfirmModal").addClass("hidden");
+}
+
+const confirmOut = () => {
+    $("#outConfirmModal").removeClass("hidden");
+}
+
+const checkOutModal = () => {
+    let project_id = $("#project_id").val();
+    let auther_id = $("#auther_id").val();
+    $.post("/projectManaAdmin/transferCheck", {
+        _token: $('meta[name="csrf-token"]').attr('content'),
+        "project_id": project_id,
+        "auther_id": auther_id,
+    }, function (res) {
+        if (res == "OK") {
+            location.reload()
+        }
+        else alert(res);
+    });
+}
+
+const closeOutModal = () => {
+    $("#outConfirmModal").addClass("hidden");
+}
+
+const confirmComplete = () => {
+    $("#completeModal").removeClass("hidden");
+}
+
+const checkCompleteModal = () => {
+    let project_id = $("#project_id").val();
+    let auther_id = $("#auther_id").val();
+    $.post("/projectManaAdmin/projectComplete", {
+        _token: $('meta[name="csrf-token"]').attr('content'),
+        "project_id": project_id,
+        "auther_id": auther_id,
+    }, function (res) {
+        if (res == "OK") {
+            location.reload()
+        }
+        else alert(res);
+    });
+}
+
+const closeCompleteModal = () => {
+    $("#completeModal").addClass("hidden");
 }
